@@ -1,25 +1,36 @@
+//  Reference : jenkins.io/doc/book/pipeline/syntax/ 
+
 pipeline {
-    agent any
-    stages {
-        stage('Stage one') {
-            steps {
-                echo 'echo stage one World'
-            }
-        }
+    agent any 
+    environment {
+        ENV_URL = "pipeline.google.com"                         // Pipeline variables ( Global )
+        SSH_CRED = credentials('SSH_CRED')
     }
     stages {
-        stage('Stage 2') {
+        stage('Name of the stage - 1') {
             steps {
-                echo 'echo stage one World'
+                sh 'echo how are you doing'
+                sh "echo Name of the variable is ${ENV_URL}"
+                sh "env"
             }
         }
-    }
-    stages {
-        stage('Stage 3') {
+        stage('Name of the stage - 2') {
+            environment {
+                ENV_URL = "stage.google.com"                    // task variable ( task varaibles will have higher priority than pipeline variable )
+            }
             steps {
-                echo 'echo stage one World'
+                sh "echo Name of the variable is ${ENV_URL}"
+                sh "echo step1"
+                sh "echo step2"
+                sh "echo step3"
+            }
+        }
+        stage('Name of the stage - 3') {
+            steps {
+                sh "echo step1"
+                sh "echo step2"
+                sh "echo step3"
             }
         }
     }
 }
-
